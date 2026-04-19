@@ -1,0 +1,24 @@
+<?xml version="1.0"?>
+
+<!DOCTYPE suppressions PUBLIC
+        "-//Checkstyle//DTD SuppressionFilter Configuration 1.2//EN"
+        "https://checkstyle.org/dtds/suppressions_1_2.dtd">
+
+<suppressions>
+    <!-- Suppress all checks for Maven-generated code -->
+    <suppress files="[/\\]target[/\\]" checks=".*"/>
+
+    <!-- Suppress all checks for archives, classes and other binary files: -->
+    <suppress files=".+\.(?:jar|zip|war|class|tar|bin)$" checks=".*"/>
+
+    <!-- Suppress all checks for image files -->
+    <suppress files=".+\.(?:png|gif|jpg|jpeg)$" checks=".*"/>
+
+    <!-- Suppress all checks for non-java files -->
+    <suppress files=".+\.(?:txt|xml|adoc|csv|sh|xlsx|html|sql|eot|ttf|woff|css|png)$" checks=".*"/>
+
+    <!-- Suppress all checks for tde.importers.sax and .csv packages -->
+    <suppress files="[/\\]sax[/\\]" checks=".*"/>
+    <suppress files="[/\\]csv[/\\]" checks=".*"/>
+
+</suppressions>
