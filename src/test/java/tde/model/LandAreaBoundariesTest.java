@@ -17,17 +17,17 @@ class LandAreaBoundariesTest {
 
     @Test
     void testIllegalArea() {
-        var e = assertThrows(IllegalArgumentException.class, () -> new Area(null));
+        var e = assertThrows(IllegalArgumentException.class, () -> new LandArea.Area(null));
         assertEquals("boundaries must not be null or empty", e.getMessage());
-        e = assertThrows(IllegalArgumentException.class, () -> new Area(List.of()));
+        e = assertThrows(IllegalArgumentException.class, () -> new LandArea.Area(List.of()));
         assertEquals("boundaries must not be null or empty", e.getMessage());
     }
 
     @Test
     void testIllegalBoundaries() {
-        var e = assertThrows(IllegalArgumentException.class, () -> new Area.Boundaries(null));
+        var e = assertThrows(IllegalArgumentException.class, () -> new LandArea.Area.Boundaries(null));
         assertEquals("coordinates must not be null or empty", e.getMessage());
-        e = assertThrows(IllegalArgumentException.class, () -> new Area.Boundaries(List.of()));
+        e = assertThrows(IllegalArgumentException.class, () -> new LandArea.Area.Boundaries(List.of()));
         assertEquals("coordinates must not be null or empty", e.getMessage());
     }
 }

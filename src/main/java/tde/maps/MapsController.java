@@ -1,5 +1,6 @@
 package tde.maps;
 
+import com.sun.javafx.geom.transform.Identity;
 import javafx.geometry.Point2D;
 import javafx.scene.control.CheckBox;
 import javafx.scene.input.MouseEvent;
@@ -59,14 +60,14 @@ public class MapsController {
         root.getChildren().clear();
     }
 
-    private void initLayer(Map<?> map) {
-        var checkBox = new CheckBox(map.getName());
-        checkBox.setSelected(map.isVisible());
+    private void initLayer(Map<?> aMap) {
+        var checkBox = new CheckBox(aMap.getName());
+        checkBox.setSelected(aMap.isVisible());
         checkBox.selectedProperty().addListener((_, _, newValue) -> {
-            map.setVisible(newValue);
+            aMap.setVisible(newValue);
             drawScene(lv95ToScreen());
         });
-        root.getChildren().add(map.getPane());
+        root.getChildren().add(aMap.getPane());
     }
 
     private Transform computeInitialScaleFactorAndPosition() {

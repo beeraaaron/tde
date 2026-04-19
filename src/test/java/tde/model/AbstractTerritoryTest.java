@@ -172,13 +172,13 @@ abstract class AbstractTerritoryTest {
      * @return the above shown land area.
      */
     protected LandArea createSingleLandArea() {
-        var boundaries = new Area.Boundaries(List.of(
+        var boundaries = new LandArea.Area.Boundaries(List.of(
                 new Coordinates(1, 3, 0),
                 new Coordinates(1, 8, 0),
                 new Coordinates(4, 8, 0),
                 new Coordinates(4, 3, 0)
         ));
-        var area = new Area(List.of(boundaries));
+        var area = new LandArea.Area(List.of(boundaries));
         return new LandArea(List.of(area));
     }
 
@@ -195,19 +195,19 @@ abstract class AbstractTerritoryTest {
      * @return the above shown land area.
      */
     protected LandArea createSingleLandAreaWithHole() {
-        var boundaries = new Area.Boundaries(List.of(
+        var boundaries = new LandArea.Area.Boundaries(List.of(
                 new Coordinates(1, 3, 0),
                 new Coordinates(1, 8, 0),
                 new Coordinates(4, 8, 0),
                 new Coordinates(4, 3, 0)
         ));
-        var hole = new Area.Boundaries(List.of(
+        var hole = new LandArea.Area.Boundaries(List.of(
                 new Coordinates(2, 5, 0),
                 new Coordinates(2, 6, 0),
                 new Coordinates(3, 6, 0),
                 new Coordinates(3, 5, 0)
         ));
-        var area = new Area(List.of(boundaries, hole));
+        var area = new LandArea.Area(List.of(boundaries, hole));
         return new LandArea(List.of(area));
     }
 
@@ -224,20 +224,20 @@ abstract class AbstractTerritoryTest {
      * @return the above shown land area.
      */
     protected LandArea createMultiLandArea() {
-        var boundaries1 = new Area.Boundaries(List.of(
+        var boundaries1 = new LandArea.Area.Boundaries(List.of(
                 new Coordinates(1, 3, 0),
                 new Coordinates(1, 8, 0),
                 new Coordinates(4, 8, 0),
                 new Coordinates(4, 3, 0)
         ));
-        var boundaries2 = new Area.Boundaries(List.of(
+        var boundaries2 = new LandArea.Area.Boundaries(List.of(
                 new Coordinates(7, 1, 0),
                 new Coordinates(7, 2, 0),
                 new Coordinates(9, 2, 0),
                 new Coordinates(9, 1, 0)
         ));
-        var area1 = new Area(List.of(boundaries1));
-        var area2 = new Area(List.of(boundaries2));
+        var area1 = new LandArea.Area(List.of(boundaries1));
+        var area2 = new LandArea.Area(List.of(boundaries2));
         return new LandArea(List.of(area1, area2));
     }
 
@@ -254,26 +254,26 @@ abstract class AbstractTerritoryTest {
      * @return the above shown land area.
      */
     protected LandArea createMultiLandAreaWithHole() {
-        var boundaries1 = new Area.Boundaries(List.of(
+        var boundaries1 = new LandArea.Area.Boundaries(List.of(
                 new Coordinates(1, 3, 0),
                 new Coordinates(1, 8, 0),
                 new Coordinates(4, 8, 0),
                 new Coordinates(4, 3, 0)
         ));
-        var hole = new Area.Boundaries(List.of(
+        var hole = new LandArea.Area.Boundaries(List.of(
                 new Coordinates(2, 5, 0),
                 new Coordinates(2, 6, 0),
                 new Coordinates(3, 6, 0),
                 new Coordinates(3, 5, 0)
         ));
-        var boundaries2 = new Area.Boundaries(List.of(
+        var boundaries2 = new LandArea.Area.Boundaries(List.of(
                 new Coordinates(7, 1, 0),
                 new Coordinates(7, 2, 0),
                 new Coordinates(9, 2, 0),
                 new Coordinates(9, 1, 0)
         ));
-        var area1 = new Area(List.of(boundaries1, hole));
-        var area2 = new Area(List.of(boundaries2));
+        var area1 = new LandArea.Area(List.of(boundaries1, hole));
+        var area2 = new LandArea.Area(List.of(boundaries2));
         return new LandArea(List.of(area1, area2));
     }
 

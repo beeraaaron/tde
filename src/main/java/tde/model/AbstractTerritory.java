@@ -105,9 +105,9 @@ public abstract class AbstractTerritory implements Territory {
     }
 
     @SuppressWarnings("checkstyle:LeftCurly")
-    private Shape buildShape(LandArea landArea) {
+    private Shape buildShape(LandArea aLandArea) {
         // invalidate cache
-        Shape shape = null;
+        Shape result = null;
 
         // fill cache
         var minX = Double.MAX_VALUE;
@@ -115,7 +115,7 @@ public abstract class AbstractTerritory implements Territory {
         var maxX = -Double.MAX_VALUE;
         var maxY = -Double.MAX_VALUE;
 
-        for (Area a : landArea.landArea()) {
+        for (Area a : aLandArea.landArea()) {
             Shape s = null;
             for (Area.Boundaries boundary: a.boundaries()) {
                 var polyline = boundary.coordinates();
@@ -141,14 +141,14 @@ public abstract class AbstractTerritory implements Territory {
                     s = Shape.subtract(s, new Polygon(pts));
                 }
             }
-            if (shape == null) {
-                shape = s;
+            if (result == null) {
+                result = s;
             } else {
-                shape = Shape.union(shape, s);
+                result = Shape.union(result, s);
             }
         }
-        boundingBox =  new Rectangle(minX, minY, maxX-minX, maxY-minY);
-        return shape;
+        boundingBox =  new Rectangle(minX, minY, maxX - minX, maxY - minY);
+        return result;
     }
 
     public double getBorderWidth() {
@@ -191,7 +191,6 @@ public abstract class AbstractTerritory implements Territory {
 
     @Override
     public boolean contains(double x, double y) {
-        // is (x, y) within territory
-        return shape.contains(x, y);
+        return false;
     }
 }
