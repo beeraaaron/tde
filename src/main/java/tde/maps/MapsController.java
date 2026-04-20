@@ -1,6 +1,5 @@
 package tde.maps;
 
-import com.sun.javafx.geom.transform.Identity;
 import javafx.geometry.Point2D;
 import javafx.scene.control.CheckBox;
 import javafx.scene.input.MouseEvent;
@@ -36,11 +35,11 @@ public class MapsController {
 
         this.root.setOnMouseMoved(e -> onMouseMoved(e));
         this.root.setOnMousePressed(e -> onMousePressed(e));
-        this.root.setOnMouseClicked(e -> onMouseClicked());
+        this.root.setOnMouseClicked(_ -> onMouseClicked());
         this.root.setOnMouseReleased(e -> onMouseReleased(e));
         this.root.setOnMouseDragged(e -> onMouseDragged(e));
         this.root.setOnScroll(e -> onScroll(e));
-        this.root.setOnMouseExited(e -> onMouseExited());
+        this.root.setOnMouseExited(_ -> onMouseExited());
 
         mainController.updateMouseProperties(scaleFactor, null, null);
     }
@@ -63,7 +62,7 @@ public class MapsController {
     private void initLayer(Map<?> aMap) {
         var checkBox = new CheckBox(aMap.getName());
         checkBox.setSelected(aMap.isVisible());
-        checkBox.selectedProperty().addListener((p1, p2, newValue) -> {
+        checkBox.selectedProperty().addListener((_, _, newValue) -> {
             aMap.setVisible(newValue);
             drawScene(lv95ToScreen());
         });
