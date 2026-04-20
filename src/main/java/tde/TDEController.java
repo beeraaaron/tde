@@ -24,10 +24,10 @@ import javax.xml.parsers.SAXParser;
 import javax.xml.parsers.SAXParserFactory;
 import java.io.File;
 import java.io.IOException;
+import java.lang.reflect.InvocationTargetException;
 import java.util.List;
 
 public class TDEController {
-
     @FXML private Label status;
     @FXML private Label mouseX;
     @FXML private Label mouseY;
@@ -59,10 +59,10 @@ public class TDEController {
             File file = chooseFile("Load CSV File containing building data");
             List<Address> addresses = csvLoader.readAddressData(file);
             database.storeAddressesFromLoader(addresses);
+            status.setText("Building addresses loaded");
         } catch (IOException ioe) {
             showErrorMessage("buildings", ioe.getMessage());
         }
-        status.setText("Building addresses loaded");
     }
 
     @FXML
@@ -73,11 +73,11 @@ public class TDEController {
             SAXParser saxParser = factory.newSAXParser();
             File file = chooseFile("Load XML File containing boundary data");
             saxParser.parse(file, saxHandler);
-        } catch (IOException | ParserConfigurationException | SAXException e) {
+            // TODO: store loaded data in SimpleDataService
+            status.setText("Boundaries loaded");
+        } catch (IOException | ParserConfigurationException | SAXException | IllegalArgumentException e) {
             showErrorMessage("boundaries", e.getMessage());
         }
-        // TODO: store loaded data in SimpleDataService
-        status.setText("Boundaries loaded");
         initialize();
     }
 
@@ -93,10 +93,7 @@ public class TDEController {
         Platform.exit();
     }
 
-    public void updateMouseProperties(
-            double scaleFactor,
-            Point2D mouse,
-            Point2D coordAtMouse) {
+    public void updateMouseProperties(double scaleFactor, Point2D mouse, Point2D coordAtMouse) {
         scaleLabel.setText(String.format("1 : %.0f", scaleFactor));
         if (mouse == null) {
             mouseX.setText("");

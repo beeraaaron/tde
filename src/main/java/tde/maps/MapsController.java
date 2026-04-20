@@ -30,17 +30,17 @@ public class MapsController {
 
     private double scaleFactor = Double.NaN;
 
-    public MapsController(StackPane aRoot, TDEController mainController) {
+    public MapsController(StackPane root, TDEController mainController) {
         this.mainController = mainController;
-        root = aRoot;
+        this.root = root;
 
-        root.setOnMouseMoved(e -> onMouseMoved(e));
-        root.setOnMousePressed(e -> onMousePressed(e));
-        root.setOnMouseClicked(_ -> onMouseClicked());
-        root.setOnMouseReleased(e -> onMouseReleased(e));
-        root.setOnMouseDragged(e -> onMouseDragged(e));
-        root.setOnScroll(e -> onScroll(e));
-        root.setOnMouseExited(_ -> onMouseExited());
+        this.root.setOnMouseMoved(e -> onMouseMoved(e));
+        this.root.setOnMousePressed(e -> onMousePressed(e));
+        this.root.setOnMouseClicked(e -> onMouseClicked());
+        this.root.setOnMouseReleased(e -> onMouseReleased(e));
+        this.root.setOnMouseDragged(e -> onMouseDragged(e));
+        this.root.setOnScroll(e -> onScroll(e));
+        this.root.setOnMouseExited(e -> onMouseExited());
 
         mainController.updateMouseProperties(scaleFactor, null, null);
     }
@@ -52,7 +52,7 @@ public class MapsController {
 
         var t = computeInitialScaleFactorAndPosition();
         drawScene(t);
-        mainController.updateMouseProperties(scaleFactor, mouse,  coordAtMouse);
+        mainController.updateMouseProperties(scaleFactor, mouse, coordAtMouse);
     }
 
     private void clearMap() {
@@ -63,7 +63,7 @@ public class MapsController {
     private void initLayer(Map<?> aMap) {
         var checkBox = new CheckBox(aMap.getName());
         checkBox.setSelected(aMap.isVisible());
-        checkBox.selectedProperty().addListener((_, _, newValue) -> {
+        checkBox.selectedProperty().addListener((p1, p2, newValue) -> {
             aMap.setVisible(newValue);
             drawScene(lv95ToScreen());
         });
