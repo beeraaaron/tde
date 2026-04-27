@@ -120,7 +120,6 @@
 		<module name="Indentation"/>
 		<module name="NumericalPrefixesInfixesSuffixesCharacterCase"/>
 		<module name="OuterTypeFilename"/>
-		<module name="TodoComment" />
 		<module name="UncommentedMain"/>
 		<module name="UpperEll" />
 

@@ -7,6 +7,8 @@ import tde.model.Coordinates;
 import tde.model.Country;
 import tde.model.LandArea;
 
+import java.time.LocalDate;
+import java.time.Month;
 import java.util.List;
 import java.util.Optional;
 
@@ -69,7 +71,47 @@ public class SimpleDataService implements DataService {
     );
 
     private final List<Country> countries = List.of(SIMPLE_CH);
-    private List<Address> addresses = List.of();
+    private List<Address> addresses = List.of(
+            new Address(
+                    new Coordinates(2602044.97, 1201026.96, 0),
+                    LocalDate.of(2026, Month.APRIL, 3),
+                    "50",
+                    true,
+                    "REAL",
+                    "UNCATEGORIZED",
+                    "Haus",
+                    "BE",
+                    "Bern",
+                    "Papiermühlestrasse",
+                    "3014 Bern"
+            ),
+            new Address(
+                    new Coordinates(2601764.41, 1200282.60, 0),
+                    LocalDate.of(2026, Month.APRIL, 3),
+                    "11",
+                    true,
+                    "REAL",
+                    "UNCATEGORIZED",
+                    "Haus",
+                    "BE",
+                    "Bern",
+                    "Reiterstrasse",
+                    "3011 Bern"
+            ),
+            new Address(
+                    new Coordinates(2600792.78, 1201339.87, 0),
+                    LocalDate.of(2026, Month.APRIL, 3),
+                    "36",
+                    true,
+                    "REAL",
+                    "UNCATEGORIZED",
+                    "Haus",
+                    "BE",
+                    "Bern",
+                    "Wylerringstrasse",
+                    "3014 Bern"
+            )
+    );
 
     @Override
     public void storeTerritoriesFromLoader(XMLHandler handler) {

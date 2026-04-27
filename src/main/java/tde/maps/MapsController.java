@@ -4,18 +4,23 @@ import javafx.geometry.Point2D;
 import javafx.scene.control.CheckBox;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.input.ScrollEvent;
+import javafx.scene.layout.Pane;
 import javafx.scene.layout.StackPane;
+import javafx.scene.shape.Rectangle;
 import javafx.scene.transform.Scale;
 import javafx.scene.transform.Transform;
 import javafx.scene.transform.Translate;
 import tde.TDEController;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class MapsController {
     private static final double INCREASE_BY_10_PERCENT = 1.1;  // 10% bigger
     private static final double DECREASE_BY_10_PERCENT = 0.9;  // 10% smaller
 
     private final TDEController mainController;
-    private Map<?> map;
+    private List<Map<?>> maps;
     private final StackPane root;
 
     private Point2D pivot = new Point2D(0, 0);
@@ -44,10 +49,10 @@ public class MapsController {
         mainController.updateMouseProperties(scaleFactor, null, null);
     }
 
-    public void setMap(Map<?> newMap) {
+    public void setMaps(List<Map<?>> maps) {
         clearMap();
-        map = newMap;
-        initLayer(map);
+        this.maps = maps;
+        initLayer(this.maps);
 
         var t = computeInitialScaleFactorAndPosition();
         drawScene(t);
@@ -55,22 +60,26 @@ public class MapsController {
     }
 
     private void clearMap() {
-        map = null;
+        maps = null;
         root.getChildren().clear();
     }
 
-    private void initLayer(Map<?> aMap) {
-        var checkBox = new CheckBox(aMap.getName());
-        checkBox.setSelected(aMap.isVisible());
-        checkBox.selectedProperty().addListener((_, _, newValue) -> {
-            aMap.setVisible(newValue);
-            drawScene(lv95ToScreen());
+    private void initLayer(List<Map<?>> maps) {
+        var panes = new ArrayList<Pane>();
+        maps.forEach(map -> {
+            var checkBox = new CheckBox(map.getName());
+            checkBox.setSelected(map.isVisible());
+            checkBox.selectedProperty().addListener((_, _, newValue) -> {
+                map.setVisible(newValue);
+                drawScene(lv95ToScreen());
+            });
+            panes.add(map.getPane());
         });
-        root.getChildren().add(aMap.getPane());
+        root.getChildren().addAll(panes);
     }
 
     private Transform computeInitialScaleFactorAndPosition() {
-        var boundingBox = map.getBoundingBox();
+        var boundingBox = calculateBoundingBox();
         pivot = new Point2D(
                 boundingBox.getX() + boundingBox.getWidth() / 2.0,
                 boundingBox.getY() + boundingBox.getHeight() / 2.0
@@ -84,6 +93,21 @@ public class MapsController {
         return lv95ToScreen();
     }
 
+    private Rectangle calculateBoundingBox() {
+        double minX = 0;
+        double minY = 0;
+        double maxX = 0;
+        double maxY = 0;
+        for (var map : maps) {
+            var b = map.getBoundingBox();
+            minX = Math.min(minX, b.getX());
+            minY = Math.min(minY, b.getY());
+            maxX = Math.max(maxX, b.getX() + b.getWidth());
+            maxY = Math.max(maxY, b.getY() + b.getHeight());
+        }
+        return new Rectangle(minX, minY, maxX - minX, maxY - minY);
+    }
+
     private Transform screenToLV95() {
         Scale s = new Scale(scaleFactor, -scaleFactor, screenpivot.getX(), screenpivot.getY());
         Translate t = new Translate(pivot.getX(), pivot.getY());
@@ -91,7 +115,7 @@ public class MapsController {
         return t.createConcatenation(s); // transformation local -> LV95
     }
 
-    private Transform lv95ToScreen() {
+    public Transform lv95ToScreen() {
         Scale s = new Scale(1.0 / scaleFactor, -1.0 / scaleFactor, pivot.getX(), pivot.getY());
         Translate t = new Translate(screenpivot.getX() + dragOffset.getX() - pivot.getX(),
                 screenpivot.getY() + dragOffset.getY() - pivot.getY());
@@ -116,7 +140,7 @@ public class MapsController {
 
     protected void onMouseClicked() {
         TPEMouseEvent evt = new TPEMouseEvent(mouse, coordAtMouse);
-        map.onMouseClicked(evt);
+        maps.forEach(map -> map.onMouseClicked(evt));
     }
 
     protected void onMousePressed(MouseEvent e) {
@@ -147,8 +171,8 @@ public class MapsController {
         mainController.updateMouseProperties(scaleFactor, null, null);
     }
 
-    private void drawScene(Transform t) {
-        map.draw(t);
+    public void drawScene(Transform t) {
+        maps.forEach(map -> map.draw(t));
     }
 
     public record TPEMouseEvent(Point2D mouse, Point2D coord) { }

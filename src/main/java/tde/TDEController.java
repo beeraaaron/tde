@@ -7,15 +7,14 @@ import javafx.scene.control.Label;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.StackPane;
+import javafx.scene.layout.VBox;
 import javafx.stage.FileChooser;
 import org.xml.sax.SAXException;
 import tde.db.DataService;
 import tde.db.SimpleDataService;
 import tde.importers.CSVLoader;
 import tde.importers.XMLHandler;
-import tde.maps.Map;
-import tde.maps.MapsController;
-import tde.maps.TerritoryMap;
+import tde.maps.*;
 import tde.model.Address;
 import tde.model.Country;
 
@@ -24,6 +23,7 @@ import javax.xml.parsers.SAXParser;
 import javax.xml.parsers.SAXParserFactory;
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 
 public class TDEController {
@@ -36,19 +36,29 @@ public class TDEController {
     @FXML private BorderPane mainStructure;
 
     @FXML private StackPane center;
+    @FXML private VBox layers;
 
     private final XMLHandler saxHandler = new XMLHandler();
     private final CSVLoader csvLoader = new CSVLoader();
 
     private final DataService database = new SimpleDataService();
 
+    MapsController mapController;
+    LayerController layerController;
+
     protected void initialize() {
         var countries = database.getAllCountries();
+        var buildings = database.getAllAddresses();
 
-        Map<Country> map = new TerritoryMap<>("Countries", countries, new Pane());
+        Map<Country> countryMap = new TerritoryMap<>("Countries", countries, new Pane());
+        Map<Address> buildingsMap = new BuildingsMap("Buildings", buildings, new Pane());
+        var maps = new ArrayList<Map<?>>(List.of(countryMap, buildingsMap));
 
-        MapsController maps = new MapsController(center, this);
-        maps.setMap(map);
+        mapController = new MapsController(center, this);
+        mapController.setMaps(maps);
+
+        layerController = new LayerController(layers, this);
+        layerController.setMaps(maps);
     }
 
     @FXML
@@ -112,5 +122,9 @@ public class TDEController {
 
     private void showErrorMessage(String subject, String msg) {
         status.setText(String.format("Could not load %s due to error: %s", subject, msg));
+    }
+
+    public void drawScene() {
+        mapController.drawScene(mapController.lv95ToScreen());
     }
 }
