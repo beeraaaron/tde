@@ -119,7 +119,7 @@ public abstract class AbstractTerritory implements Territory {
             Shape s = null;
             for (Area.Boundaries boundary: a.boundaries()) {
                 var polyline = boundary.coordinates();
-                double[] pts = new  double[2 * polyline.size()];
+                double[] pts = new double[2 * polyline.size()];
                 int i = 0;
                 for (Coordinates c: polyline) {
                     pts[i * 2] = c.east();
@@ -191,6 +191,6 @@ public abstract class AbstractTerritory implements Territory {
 
     @Override
     public boolean contains(double x, double y) {
-        return false;
+        return landArea.contains(x, y);
     }
 }

@@ -1,6 +1,8 @@
 package tde.model;
 
 import javafx.scene.layout.Pane;
+import javafx.scene.paint.Color;
+import javafx.scene.shape.Rectangle;
 import javafx.scene.transform.Transform;
 
 import java.time.LocalDate;
@@ -33,7 +35,10 @@ public record Address(
         String communityName,
         String streetName,
         String zipLabel
-)implements Drawable {
+) implements Drawable {
+    public static final double BUILDING_HEIGHT = 500;
+    public static final double BUILDING_WIDTH = 500;
+
     private static final String MODIFICATION_DATE_EXC = "Modification date must not be in the future";
     private static final String NUMBER_NAME_EXC = "Either number or building name must be present";
     private static final String EMPTY_EXC = "Canton, community name, street name and zip label must not be null";
@@ -97,10 +102,18 @@ Modified: %s
 
     @Override
     public void draw(Pane p, Transform t) {
+        var rectangle = new Rectangle(location.east(), location.north(), BUILDING_WIDTH, BUILDING_HEIGHT);
+        rectangle.getTransforms().clear();
+        rectangle.getTransforms().add(t);
+        rectangle.setStrokeWidth(BUILDING_WIDTH / 50);
+        rectangle.setStroke(Color.RED);
+        rectangle.setFill(Color.RED);
+        p.getChildren().add(rectangle);
     }
 
     @Override
     public boolean contains(double x, double y) {
-        return false;
+        return location.east() <= x && x <= location().east() + BUILDING_WIDTH
+                && location.north() >= y && y <= location().north() - BUILDING_HEIGHT;
     }
 }

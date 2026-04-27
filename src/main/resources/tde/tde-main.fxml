@@ -84,6 +84,15 @@
                </VBox>
            </HBox>
            <Separator />
+           <VBox prefWidth="200.0" prefHeight="150" BorderPane.alignment="CENTER">
+               <Label text="Layers">
+                   <font>
+                       <Font name="System Bold" size="12.0" />
+                   </font>
+               </Label>
+               <VBox fx:id="layers">
+               </VBox>
+           </VBox>
        </VBox>
    </right>
 </BorderPane>

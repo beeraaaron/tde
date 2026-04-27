@@ -1,5 +1,6 @@
 package tde.model;
 
+import java.awt.geom.Path2D;
 import java.util.List;
 
 /**
@@ -42,6 +43,10 @@ public record LandArea(List<Area> landArea) {
         }
     }
 
+    public boolean contains(double x, double y) {
+        return landArea.stream().anyMatch(l -> l.contains(x, y));
+    }
+
     /**
      * A list of areas that together make up the territory.
      * @param boundaries a list of main territory (first in list) and enclaves that do not belong to the territory.
@@ -53,6 +58,15 @@ public record LandArea(List<Area> landArea) {
                 throw new IllegalArgumentException("boundaries must not be null or empty");
             }
         }
+
+        public boolean contains(double x, double y) {
+            Path2D path = new Path2D.Double(Path2D.WIND_EVEN_ODD);
+            boundaries.forEach(b -> {
+                path.moveTo(b.coordinates().getFirst().east(), b.coordinates().getFirst().north());
+                b.coordinates().stream().skip(1).forEach(c -> path.lineTo(c.east(), c.north()));
+                path.closePath();
+            });
+            return path.contains(x, y);        }
 
         /**
          * A list of coordinate triplets (in LV95) that define the boundaries of an area. These coordinates
@@ -67,5 +81,4 @@ public record LandArea(List<Area> landArea) {
             }
         }
     }
-
 }
