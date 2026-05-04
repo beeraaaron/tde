@@ -1,8 +1,7 @@
 package tde.db;
 
 import tde.importers.XMLHandler;
-import tde.model.Address;
-import tde.model.Country;
+import tde.model.*;
 
 import java.util.List;
 import java.util.Optional;
@@ -18,6 +17,24 @@ public interface DataService {
     List<Country> getAllCountries();
 
     /**
+     * Retrieve a single list of all cantons.
+     * @return list of cantons.
+     */
+    List<Canton> getAllCantons();
+
+    /**
+     * Retrieve a single list of all districts.
+     * @return list of districts.
+     */
+    List<District> getAllDistricts();
+
+    /**
+     * Retrieve a single list of all municipalities.
+     * @return list of municipalities.
+     */
+    List<Municipality> getAllMunicipalities();
+
+    /**
      * Retrieve a single country by its name. This query will return immediately upon the first country
      * that matches with its name.
      * @param name the countries name
@@ -31,9 +48,7 @@ public interface DataService {
      */
     List<Address> getAllAddresses();
 
-    // TODO
     void storeTerritoriesFromLoader(XMLHandler handler);
 
-    // TODO
     void storeAddressesFromLoader(List<Address> addresses);
 }

@@ -9,19 +9,21 @@ import java.time.LocalDate;
 
 import static java.time.format.DateTimeFormatter.BASIC_ISO_DATE;
 
-/** Represents an address in Switzerland or Liechtenstein.
- * @param location       coordinates according to LV95.
- * @param modified       date of last update to this address.
- * @param number         house number.
- * @param official       official address according to the [Federal Register of Buildings and Dwellings]
- *     (https://www.bfs.admin.ch/bfs/en/home/registers/federal-register-buildings-dwellings.html "RBD").
- * @param status         realisation status according the RBD.
- * @param category       building category.
- * @param buildingName   building name.
- * @param canton         2 letter abbreviation of canton.
- * @param communityName  name of community (city).
- * @param streetName     street name.
- * @param zipLabel       zip and community name.
+/**
+ * Represents an address in Switzerland or Liechtenstein.
+ *
+ * @param location      coordinates according to LV95.
+ * @param modified      date of last update to this address.
+ * @param number        house number.
+ * @param official      official address according to the [Federal Register of Buildings and Dwellings]
+ *                      (https://www.bfs.admin.ch/bfs/en/home/registers/federal-register-buildings-dwellings.html "RBD").
+ * @param status        realisation status according the RBD.
+ * @param category      building category.
+ * @param buildingName  building name.
+ * @param canton        2 letter abbreviation of canton.
+ * @param communityName name of community (city).
+ * @param streetName    street name.
+ * @param zipLabel      zip and community name.
  */
 public record Address(
         Coordinates location,
@@ -36,8 +38,8 @@ public record Address(
         String streetName,
         String zipLabel
 ) implements Drawable {
-    public static final double BUILDING_HEIGHT = 500;
-    public static final double BUILDING_WIDTH = 500;
+    public static final double BUILDING_HEIGHT = 20;
+    public static final double BUILDING_WIDTH = 20;
 
     private static final String MODIFICATION_DATE_EXC = "Modification date must not be in the future";
     private static final String NUMBER_NAME_EXC = "Either number or building name must be present";
@@ -54,15 +56,15 @@ public record Address(
     @Override
     public String toString() {
         return String.format(
-"""
-e: %7.0f n:%7.0f
-%s %s, %s
-%s-%s, %s
-
-%s %s address
-%s
-Modified: %s
-""",
+                """
+                        e: %7.0f n:%7.0f
+                        %s %s, %s
+                        %s-%s, %s
+                        
+                        %s %s address
+                        %s
+                        Modified: %s
+                        """,
                 location.east(), location.north(),
                 streetName, number, buildingName,
                 canton, zipLabel, communityName,
@@ -73,7 +75,7 @@ Modified: %s
 
     private void checkNonEmpty(String aCanton, String aCommunityName, String aStreetName, String aZipLabel) {
         if (aCommunityName == null || aStreetName == null || aZipLabel == null
-            || aCommunityName.isBlank() || aStreetName.isBlank() || aZipLabel.isBlank()) {
+                || aCommunityName.isBlank() || aStreetName.isBlank() || aZipLabel.isBlank()) {
             throw new IllegalArgumentException(EMPTY_EXC);
         }
         if ((aCanton != null && !aCanton.isBlank()) && aCanton.length() != 2) {

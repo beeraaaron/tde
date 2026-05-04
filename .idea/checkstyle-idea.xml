@@ -27,7 +27,7 @@
             </map>
           </option>
         </ConfigurationLocation>
-        <ConfigurationLocation id="6ded6082-c0dc-4b98-a36f-4a77d57f4cae" type="PROJECT_RELATIVE" scope="All" description="FHNW Checks">C:\Users\chris\Documents\FHNW\Semester\2026FS\prog2\tde\..\..\..\..\Unterrichte\TDE\config\fhnw_checks.xml</ConfigurationLocation>
+        <ConfigurationLocation id="6ded6082-c0dc-4b98-a36f-4a77d57f4cae" type="PROJECT_RELATIVE" scope="All" description="FHNW Checks">C:\Users\chris\Documents\FHNW\Unterrichte\TDE\config\fhnw_checks.xml</ConfigurationLocation>
       </list>
     </option>
   </component>

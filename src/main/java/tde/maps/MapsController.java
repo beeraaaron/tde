@@ -7,6 +7,7 @@ import javafx.scene.input.ScrollEvent;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.StackPane;
 import javafx.scene.shape.Rectangle;
+import javafx.scene.transform.NonInvertibleTransformException;
 import javafx.scene.transform.Scale;
 import javafx.scene.transform.Transform;
 import javafx.scene.transform.Translate;
@@ -109,10 +110,11 @@ public class MapsController {
     }
 
     private Transform screenToLV95() {
-        Scale s = new Scale(scaleFactor, -scaleFactor, screenpivot.getX(), screenpivot.getY());
-        Translate t = new Translate(pivot.getX(), pivot.getY());
-
-        return t.createConcatenation(s); // transformation local -> LV95
+        try {
+            return lv95ToScreen().createInverse();
+        } catch (NonInvertibleTransformException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     public Transform lv95ToScreen() {
@@ -123,9 +125,8 @@ public class MapsController {
     }
 
     protected void onMouseMoved(MouseEvent e) {
-        mouse = new Point2D(e.getX(), e.getY()); // mouse local coordinates
-        Transform t = screenToLV95();
-        coordAtMouse = t.transform(mouse);
+        mouse = new Point2D(e.getX(), e.getY());
+        coordAtMouse = screenToLV95().transform(mouse);
         mainController.updateMouseProperties(scaleFactor, mouse,  coordAtMouse);
     }
 
@@ -157,7 +158,7 @@ public class MapsController {
     }
 
     protected void onMouseReleased(MouseEvent e) {
-        mouse = new Point2D(e.getX(), e.getY()); // mouse local coordinates
+        mouse = new Point2D(e.getX(), e.getY());
         screenpivot = screenpivot.add(dragOffset);
 
         dragStart = new Point2D(Double.NaN, Double.NaN);

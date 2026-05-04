@@ -15,8 +15,7 @@ import tde.db.SimpleDataService;
 import tde.importers.CSVLoader;
 import tde.importers.XMLHandler;
 import tde.maps.*;
-import tde.model.Address;
-import tde.model.Country;
+import tde.model.*;
 
 import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.parsers.SAXParser;
@@ -38,7 +37,7 @@ public class TDEController {
     @FXML private StackPane center;
     @FXML private VBox layers;
 
-    private final XMLHandler saxHandler = new XMLHandler();
+    private final XMLHandler xmlHandler = new XMLHandler();
     private final CSVLoader csvLoader = new CSVLoader();
 
     private final DataService database = new SimpleDataService();
@@ -47,12 +46,14 @@ public class TDEController {
     LayerController layerController;
 
     protected void initialize() {
-        var countries = database.getAllCountries();
-        var buildings = database.getAllAddresses();
+        Map<Country> countries = new TerritoryMap<>("Countries", database.getAllCountries(), new Pane());
+        Map<Canton> kantone = new TerritoryMap<>("Cantons", database.getAllCantons(), new Pane());
+        Map<District> bezirke = new TerritoryMap<>("Districts", database.getAllDistricts(), new Pane());
+        Map<Municipality> hoheiten = new TerritoryMap<>("Municipalities", database.getAllMunicipalities(), new Pane());
 
-        Map<Country> countryMap = new TerritoryMap<>("Countries", countries, new Pane());
-        Map<Address> buildingsMap = new BuildingsMap("Buildings", buildings, new Pane());
-        var maps = new ArrayList<Map<?>>(List.of(countryMap, buildingsMap));
+        Map<Address> buildingsMap = new BuildingsMap("Buildings", database.getAllAddresses(), new Pane());
+
+        var maps = new ArrayList<Map<?>>(List.of(countries, kantone, bezirke, hoheiten, buildingsMap));
 
         mapController = new MapsController(center, this);
         mapController.setMaps(maps);
@@ -66,12 +67,13 @@ public class TDEController {
         status.setText("Load buildings addresses...");
         try {
             File file = chooseFile("Load CSV File containing building data");
-            List<Address> addresses = csvLoader.readAddressData(file);
+            List<Address> addresses = csvLoader.readAddressData(file, "UR");
             database.storeAddressesFromLoader(addresses);
             status.setText("Building addresses loaded");
         } catch (IOException ioe) {
             showErrorMessage("buildings", ioe.getMessage());
         }
+        initialize();
     }
 
     @FXML
@@ -81,8 +83,8 @@ public class TDEController {
         try {
             SAXParser saxParser = factory.newSAXParser();
             File file = chooseFile("Load XML File containing boundary data");
-            saxParser.parse(file, saxHandler);
-            // TODO: store loaded data in SimpleDataService
+            saxParser.parse(file, xmlHandler);
+            database.storeTerritoriesFromLoader(xmlHandler);
             status.setText("Boundaries loaded");
         } catch (IOException | ParserConfigurationException | SAXException | IllegalArgumentException e) {
             showErrorMessage("boundaries", e.getMessage());
