@@ -25,23 +25,7 @@ public class BuildingsMap extends AbstractMap<Address> {
 
     @Override
     public Rectangle getBoundingBox() {
-/*        if (buildings == null || buildings.isEmpty()) {
-            return new Rectangle();
-        }
-
-        double minX = Double.MAX_VALUE;
-        double minY = Double.MAX_VALUE;
-        double maxX = -Double.MAX_VALUE;
-        double maxY = -Double.MAX_VALUE;
-        for (var building : buildings) {
-            Coordinates location = building.location();
-            minX = Math.min(minX, location.east());
-            minY = Math.min(minY, location.north() - BUILDING_HEIGHT);
-            maxX = Math.max(maxX, location.east() + BUILDING_WIDTH);
-            maxY = Math.max(maxY, location.north());
-        }*/
-
-        return new Rectangle(100, 100, 100, 100);
+        return new Rectangle();
     }
 
     @Override
