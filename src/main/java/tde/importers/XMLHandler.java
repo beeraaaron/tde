@@ -35,8 +35,7 @@ public class XMLHandler extends DefaultHandler {
     private boolean inBoundary = false;
 
     @Override
-    public void startElement(String uri, String localName, String qName,
-                             Attributes attributes) {
+    public void startElement(String uri, String localName, String qName, Attributes attributes) {
         charBuffer.setLength(0);
 
         switch (qName) {

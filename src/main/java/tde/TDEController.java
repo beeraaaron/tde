@@ -70,8 +70,8 @@ public class TDEController {
             List<Address> addresses = csvLoader.readAddressData(file, "UR");
             database.storeAddressesFromLoader(addresses);
             status.setText("Building addresses loaded");
-        } catch (IOException ioe) {
-            showErrorMessage("buildings", ioe.getMessage());
+        } catch (Exception e) {
+            showErrorMessage("buildings", e.getMessage());
         }
         initialize();
     }
