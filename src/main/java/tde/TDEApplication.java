@@ -18,7 +18,7 @@ public class TDEApplication extends Application {
         fxmlLoader.setController(generalController);
         Scene scene = new Scene(fxmlLoader.load(), SCENE_WIDTH, SCENE_HEIGHT);
 
-        stage.setTitle("Topo Data Explorer");
+        stage.titleProperty().bind(generalController.getI18n().bind("title"));
         stage.setOnCloseRequest(_ -> generalController.onAppExit());
         stage.setScene(scene);
         stage.show();
