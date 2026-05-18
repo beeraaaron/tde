@@ -27,7 +27,8 @@ public class LayerController {
     private void initLayer(List<Map<?>> maps) {
         var checkBoxes = new ArrayList<CheckBox>();
         maps.forEach(map -> {
-            var checkBox = new CheckBox(map.getName());
+            var checkBox = new CheckBox();
+            checkBox.textProperty().bind(mainController.getI18n().bind(map.getName()));
             checkBox.setSelected(map.isVisible());
             checkBox.selectedProperty().addListener((_, _, newValue) -> {
                 map.setVisible(newValue);
